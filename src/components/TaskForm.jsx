@@ -1,30 +1,80 @@
-
 import { useState } from "react";
-import TaskForm from "./TaskForm";
 
-function App() {
+function TaskForm({ ajouterTache }) {
 
-    const [taches, setTaches] = useState([]);
+  const [titre, setTitre] = useState("");
+  const [description, setDescription] = useState("");
+  const [dateLimite, setDateLimite] = useState("");
 
-    function ajouterTache(tache) {
-        setTaches([...taches, tache]);
-    }
+  function handleSubmit(e) {
 
-    return (
+    e.preventDefault();
+
+    const nouvelleTache = {
+      titre: titre,
+      description: description,
+      statut: "En attente",
+      dateLimite: dateLimite
+    };
+
+    ajouterTache(nouvelleTache);
+
+    setTitre("");
+    setDescription("");
+    setDateLimite("");
+  }
+
+  return (
+    <div style={{ padding: "20px" }}>
+
+      <h2>Ajouter une tâche</h2>
+
+      <form onSubmit={handleSubmit}>
+
         <div>
-            <h1>Gestion des tâches</h1>
-
-            <TaskForm ajouterTache={ajouterTache} />
-
-            {taches.map((tache, index) => (
-                <div key={index}>
-                    <h3>{tache.titre}</h3>
-                    <p>{tache.description}</p>
-                    <p>{tache.dateLimite}</p>
-                </div>
-            ))}
+          <label>Titre :</label>
+          <input
+            type="text"
+            value={titre}
+            onChange={(e) => setTitre(e.target.value)}
+            required
+          />
         </div>
-    );
+
+        <br />
+
+        <div>
+          <label>Description :</label>
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+        </div>
+
+        <br />
+
+        <div>
+          <label>Date limite :</label>
+          <input
+            type="date"
+            value={dateLimite}
+            onChange={(e) => setDateLimite(e.target.value)}
+            required
+          />
+        </div>
+
+        <br />
+
+        <button type="submit">
+          Ajouter
+        </button>
+
+      </form>
+
+    </div>
+  );
 }
 
-export default App;
+export default TaskForm;
